@@ -1,0 +1,13 @@
+#pragma kernel CSMain
+
+Texture2D<float4> Camera;
+RWTexture2D<float4> Result;
+float2 Resolution;
+
+[numthreads(8, 8, 1)]
+void CSMain(uint3 id : SV_DispatchThreadID)
+{
+    if (id.x >= Resolution.x || id.y >= Resolution.y) return;
+    float4 col = Camera[id.xy];
+    Result[id.xy] = col + float4(id.x/Resolution.x, id.y/Resolution.y, 0.1, 0);
+}
